@@ -35,9 +35,7 @@ static unsigned long gbcToRgb32(unsigned const bgr15) {
 	unsigned long const g = bgr15 >>  5 & 0x1F;
 	unsigned long const b = bgr15 >> 10 & 0x1F;
 
-	return ((r * 13 + g * 2 + b) >> 1) << 16
-	     | (g * 3 + b) << 9
-	     | (r * 3 + g * 2 + b * 11) >> 1;
+	return (r << 19) | (g << 11) | (b << 3);	// true color
 }
 
 /*static unsigned long gbcToRgb16(unsigned const bgr15) {
@@ -463,7 +461,7 @@ void LCD::wxChange(unsigned newValue, unsigned long cycleCounter) {
 
 void LCD::wyChange(unsigned const newValue, unsigned long const cc) {
 	update(cc + 1);
-	ppu_.setWy(newValue); 
+	ppu_.setWy(newValue);
 
 	// mode3CyclesChange();
 	// (should be safe to wait until after wy2 delay, because no mode3 events are
